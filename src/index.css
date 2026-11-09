@@ -1,0 +1,405 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --soleil: #ffc531;
+  --soleil-clair: #ffe59a;
+  --ciel: #1a66cc;
+  --ciel-fonce: #124c99;
+  --feuille: #2bb673;
+  --feuille-fonce: #1e8a55;
+  --bec: #ff8a3d;
+  --encre: #1f2a44;
+  --encre-douce: #4a5672;
+  --calme: #dcebff;
+  --fond: #fffbf2;
+  --fond-vert: #e9f7ef;
+  --gris: #e3e7ef;
+  --gris-bord: #c9d1e2;
+  --blanc: #ffffff;
+  --echelle: 1;
+  --titre: 'Baloo 2', 'Nunito', system-ui, sans-serif;
+  --texte: 'Nunito', system-ui, sans-serif;
+  color-scheme: light;
+}
+
+:root[data-grands-boutons='true'] {
+  --echelle: 1.25;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--texte);
+  color: var(--encre);
+  background: var(--fond);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--ciel);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+.titre {
+  font-family: var(--titre);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+/* Écrans */
+.ecran {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(16px, 3vw, 40px);
+  gap: clamp(12px, 2.4vh, 28px);
+}
+
+.centre {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.barre-haut {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.barre-haut .groupe {
+  display: flex;
+  gap: 12px;
+}
+
+/* Boutons */
+.btn {
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-decoration: none;
+  font-weight: 800;
+  border-radius: 999px;
+  min-height: calc(64px * var(--echelle));
+  padding: 0 calc(28px * var(--echelle));
+  font-size: calc(20px * var(--echelle));
+  transition: transform 0.1s;
+  color: var(--encre);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:focus-visible,
+.choix:focus-visible,
+.rond:focus-visible {
+  outline: 4px solid var(--ciel);
+  outline-offset: 3px;
+}
+
+.btn-principal {
+  background: var(--ciel);
+  color: var(--blanc);
+}
+
+.btn-sombre {
+  background: var(--encre);
+  color: var(--blanc);
+}
+
+.btn-soleil {
+  background: var(--soleil);
+}
+
+.btn-vert {
+  background: var(--feuille);
+  border: 5px solid var(--encre);
+  font-family: var(--titre);
+  font-size: calc(36px * var(--echelle));
+  min-height: calc(104px * var(--echelle));
+  padding: 0 calc(48px * var(--echelle));
+}
+
+.btn-contour {
+  background: var(--blanc);
+  border: 3px solid var(--gris-bord);
+}
+
+.btn-calme {
+  background: var(--calme);
+}
+
+.btn-lien {
+  background: none;
+  color: var(--ciel);
+  min-height: 48px;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.rond {
+  width: calc(64px * var(--echelle));
+  height: calc(64px * var(--echelle));
+  border-radius: 50%;
+  border: 2px solid var(--gris);
+  background: var(--blanc);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: var(--encre);
+}
+
+/* Choix d'images dans les exercices */
+.grille-choix {
+  flex: 1;
+  display: grid;
+  gap: clamp(12px, 2.5vw, 32px);
+  align-items: stretch;
+  min-height: 0;
+}
+
+.choix {
+  border: 4px solid var(--gris);
+  background: var(--blanc);
+  border-radius: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: calc(22px * var(--echelle));
+  min-height: 140px;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.choix.actif {
+  border-color: var(--ciel);
+}
+
+.choix.bon {
+  border-color: var(--feuille);
+  background: #eafaf1;
+}
+
+.choix.doux {
+  opacity: 0.55;
+}
+
+.choix svg {
+  width: min(70%, 220px);
+  height: auto;
+  max-height: 32vh;
+}
+
+.consigne {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  font-family: var(--titre);
+  font-weight: 800;
+  font-size: clamp(28px, 4.4vw, 52px);
+  line-height: 1.1;
+}
+
+.consigne svg.piou {
+  width: clamp(64px, 9vw, 100px);
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* Formulaires parents */
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.champ label {
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.champ input,
+.champ select {
+  height: 56px;
+  border: 2px solid var(--gris-bord);
+  border-radius: 16px;
+  padding: 0 18px;
+  font-size: 18px;
+  background: var(--blanc);
+}
+
+.carte {
+  background: var(--blanc);
+  border-radius: 24px;
+  padding: 20px 24px;
+}
+
+.message {
+  padding: 12px 18px;
+  border-radius: 16px;
+  font-weight: 700;
+}
+
+.message.erreur {
+  background: #ffe1d6;
+}
+
+.message.info {
+  background: var(--calme);
+}
+
+.puce {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 14px;
+  background: var(--gris);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Animations douces, désactivables */
+@keyframes flotter {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes respirer {
+  0%,
+  100% {
+    transform: scale(0.75);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+@keyframes eclore {
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes monter {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-120vh);
+  }
+}
+
+.flotte {
+  animation: flotter 3s ease-in-out infinite;
+}
+
+.eclot {
+  animation: eclore 0.6s ease-out both;
+}
+
+:root[data-sans-animation='true'] *,
+:root[data-sans-animation='true'] *::before,
+:root[data-sans-animation='true'] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flotte,
+  .eclot {
+    animation: none;
+  }
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* Téléphone en portrait */
+@media (max-width: 600px) {
+  .consigne {
+    font-size: 28px;
+  }
+  .choix {
+    min-height: 110px;
+    border-radius: 28px;
+  }
+}
+
+/* Téléphone en paysage : on invite à tourner l'appareil */
+.tourner {
+  display: none;
+}
+
+@media (max-height: 500px) and (orientation: landscape) and (pointer: coarse) {
+  .tourner {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: var(--soleil);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-family: var(--titre);
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    padding: 24px;
+  }
+}
