@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Piou } from '../components/Piou'
 import { supabase } from '../lib/supabase'
 
@@ -13,6 +13,25 @@ export default function Bienvenue() {
   const [occupe, setOccupe] = useState(false)
 
   const retour = window.location.origin + window.location.pathname
+
+  // Retour depuis le lien du mail : si la connexion automatique n'a pas pu se faire
+  // (autre navigateur, autre appareil), l'adresse est quand même confirmée.
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search)
+    const h = new URLSearchParams(window.location.hash.replace(/^#\/?/, ''))
+    const erreur = p.get('error_description') ?? h.get('error_description')
+    if (!p.get('code') && !erreur) return
+    const t = setTimeout(() => {
+      setMode('connexion')
+      setMessage(
+        erreur && /expired|invalid/i.test(erreur)
+          ? { type: 'erreur', texte: 'Ce lien a expiré. Connectez-vous : si l’adresse n’est pas encore confirmée, un nouveau mail vous sera proposé.' }
+          : { type: 'info', texte: 'Votre adresse mail est confirmée. Connectez-vous avec votre mot de passe.' },
+      )
+      window.history.replaceState(null, '', window.location.pathname)
+    }, 1500)
+    return () => clearTimeout(t)
+  }, [])
 
   async function envoyer(e: FormEvent) {
     e.preventDefault()
