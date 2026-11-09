@@ -16,7 +16,7 @@ const telechargerFiches = (enfant: string, profil: Profil, niveaux: Niveau[]) =>
 type Onglet = 'progres' | 'fiches' | 'reglages' | 'enfant' | 'compte'
 
 const ONGLETS: [Onglet, string][] = [
-  ['progres', 'Progrès'],
+  ['progres', 'Tableau de bord'],
   ['fiches', 'Fiches à imprimer'],
   ['reglages', 'Réglages'],
   ['enfant', 'Parcours de l’enfant'],
@@ -75,6 +75,19 @@ export default function Parent() {
         ))}
         <button className="btn btn-soleil" style={{ marginTop: 'auto' }} onClick={sortir}>
           Retour au jeu
+        </button>
+        <button
+          className="btn btn-contour"
+          onClick={() => {
+            deverrouillerParent(false)
+            choisirEnfant(null)
+            nav('/enfants')
+          }}
+        >
+          Changer d’enfant
+        </button>
+        <button className="btn btn-lien" onClick={() => void deconnecter().then(() => nav('/', { replace: true }))}>
+          Me déconnecter
         </button>
         {!enLigne && <p style={{ fontSize: 14, color: 'var(--encre-douce)', padding: '0 8px' }}>Hors connexion : tout est gardé sur l’appareil et sera envoyé plus tard.</p>}
       </nav>

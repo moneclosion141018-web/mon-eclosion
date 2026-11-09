@@ -24,8 +24,9 @@ export function BarreHaut({ retour = '/carte', icone = 'maison', milieu, sansCal
             Calme
           </button>
         )}
-        <button className="rond" aria-label="Espace parent" onClick={() => aller('/code')}>
-          <IconeCadenas />
+        <button className="btn btn-contour" style={{ borderWidth: 2 }} onClick={() => aller('/code')}>
+          <IconeCadenas t={26} />
+          Parent
         </button>
       </div>
     </div>

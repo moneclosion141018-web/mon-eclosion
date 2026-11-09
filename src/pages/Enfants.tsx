@@ -20,8 +20,9 @@ export default function Enfants() {
             Qui joue aujourd’hui ?
           </h1>
         </div>
-        <button className="rond" aria-label="Espace parent" onClick={() => nav('/code')}>
-          <IconeCadenas />
+        <button className="btn btn-contour" style={{ borderWidth: 2 }} onClick={() => nav('/code')}>
+          <IconeCadenas t={26} />
+          Espace parent
         </button>
       </div>
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24, alignContent: 'center' }}>
