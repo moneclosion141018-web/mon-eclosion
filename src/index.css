@@ -85,6 +85,7 @@ h3 {
 
 .barre-haut {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
@@ -371,6 +372,11 @@ h3 {
 
 /* Téléphone en portrait */
 @media (max-width: 600px) {
+  .barre-haut .btn {
+    padding: 0 16px;
+    font-size: 17px;
+    min-height: 56px;
+  }
   .consigne {
     font-size: 28px;
   }
