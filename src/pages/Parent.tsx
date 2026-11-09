@@ -229,7 +229,7 @@ function Progres({ enfant, surChangerProfil }: { enfant: Enfant; surChangerProfi
             </div>
           )
         })}
-        <p style={{ margin: 0, fontSize: 14, color: 'var(--encre-douce)' }}>Le niveau suivant s’ouvre après 8 essais réussis sur les 10 derniers.</p>
+        <p style={{ margin: 0, fontSize: 14, color: 'var(--encre-douce)' }}>Le niveau suivant devient le niveau en cours après 8 réussites sur les 10 derniers essais, notées dans les bilans de fin de séance.</p>
       </Section>
       <Section titre="Temps de jeu, 7 derniers jours">
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10, height: 160, borderBottom: '2px solid var(--gris)', position: 'relative' }} role="img" aria-label={`Temps de jeu par jour : ${semaine.map((j) => `${j.minutes} minutes`).join(', ')}`}>
@@ -336,6 +336,7 @@ function OngletReglages({ enfant, maj, majDecor }: { enfant: Enfant; maj: (p: Pa
         )}
       </Section>
       <Section titre="Confort">
+        <Interrupteur id="ouverts" label="Tous les niveaux ouverts" aide="Version de test : l’enfant peut jouer à n’importe quel niveau du parcours." valeur={r.niveauxOuverts} surChange={(v) => maj({ niveauxOuverts: v })} />
         <Interrupteur id="gros" label="Grands boutons" aide="Pour les enfants qui ont du mal à viser." valeur={r.grandsBoutons} surChange={(v) => maj({ grandsBoutons: v })} />
         <Interrupteur id="anim" label="Couper toutes les animations" valeur={r.sansAnimation} surChange={(v) => maj({ sansAnimation: v })} />
         <Interrupteur id="sons" label="Petits sons de réponse" valeur={r.sons} surChange={(v) => maj({ sons: v })} />

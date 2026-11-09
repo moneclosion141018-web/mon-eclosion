@@ -3,7 +3,7 @@ import { BarreHaut } from '../components/BarreHaut'
 import { Dessin } from '../components/Dessins'
 import { Piou } from '../components/Piou'
 import { useApp } from '../contexte'
-import { limiteSecondes, NOMS_NIVEAUX } from '../lib/progression'
+import { limiteSecondes, NOMS_NIVEAUX, reglagesDe } from '../lib/progression'
 import { aujourdhui } from '../lib/store'
 import { son } from '../lib/sons'
 import type { Niveau } from '../lib/types'
@@ -14,6 +14,11 @@ export default function Carte() {
   if (!enfant) return <Navigate to="/enfants" replace />
   const limite = limiteSecondes(enfant, aujourdhui())
   const fini = limite > 0 && secondesAujourdhui >= limite
+  const ouverts = reglagesDe(enfant).niveauxOuverts
+  const jouer = (n: Niveau) => {
+    son.clic()
+    nav(fini ? '/fin' : `/jeu?niveau=${n}`)
+  }
 
   return (
     <div className="ecran" style={{ background: 'var(--fond-vert)' }}>
@@ -34,13 +39,18 @@ export default function Carte() {
               )}
               {actuel ? (
                 <button
-                  onClick={() => {
-                    son.clic()
-                    nav(fini ? '/fin' : '/jeu')
-                  }}
+                  onClick={() => jouer(n)}
                   style={{ width: 'calc(170px * var(--echelle))', height: 'calc(170px * var(--echelle))', borderRadius: '50%', background: 'var(--soleil)', border: '8px solid var(--encre)', fontFamily: 'var(--titre)', fontSize: 40, fontWeight: 800, cursor: 'pointer' }}
                 >
                   Jouer
+                </button>
+              ) : ouverts ? (
+                <button
+                  onClick={() => jouer(n)}
+                  aria-label={`Jouer au niveau ${n}`}
+                  style={{ width: 'calc(130px * var(--echelle))', height: 'calc(130px * var(--echelle))', borderRadius: '50%', background: termine ? 'var(--feuille)' : 'var(--blanc)', border: termine ? '4px solid var(--feuille-fonce)' : '4px solid var(--soleil)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                >
+                  {termine ? <Dessin nom="fleur" taille={96} /> : <span className="titre" style={{ fontSize: 56 }}>{n}</span>}
                 </button>
               ) : (
                 <span style={{ width: 130, height: 130, borderRadius: '50%', background: termine ? 'var(--feuille)' : 'var(--blanc)', border: termine ? 'none' : '4px solid #A9B3C8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -54,7 +64,7 @@ export default function Carte() {
         })}
         {enfant.parcours_termine && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-            <button className="btn btn-soleil" onClick={() => nav(fini ? '/fin' : '/jeu')} style={{ minHeight: 120, fontSize: 28 }}>
+            <button className="btn btn-soleil" onClick={() => jouer(4)} style={{ minHeight: 120, fontSize: 28 }}>
               Rejouer
             </button>
           </div>

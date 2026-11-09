@@ -9,6 +9,7 @@ export interface Reglages {
   sansAnimation: boolean
   sons: boolean
   sansBruitFort: boolean
+  niveauxOuverts: boolean // version de test : tous les niveaux jouables
   bonusJour?: string // jour où le parent a ajouté du temps
   bonusMinutes?: number
 }

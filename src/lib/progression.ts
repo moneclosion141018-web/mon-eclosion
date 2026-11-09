@@ -7,6 +7,7 @@ export const reglagesDefaut: Reglages = {
   sansAnimation: false,
   sons: true,
   sansBruitFort: false,
+  niveauxOuverts: true,
 }
 
 export function reglagesDe(enfant: Enfant | null | undefined): Reglages {

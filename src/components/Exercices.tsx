@@ -60,7 +60,8 @@ function BoutonATOI({ surFini, texte = 'À toi !' }: { surFini: () => void; text
     ref.current?.arreter()
     setEcoute(false)
     son.bravo()
-    surFini()
+    void parler('Bravo !')
+    setTimeout(surFini, 900)
   }, [surFini])
 
   useEffect(() => () => ref.current?.arreter(), [])
@@ -148,7 +149,8 @@ function Souffle({ ex, surFin }: { ex: Extract<Exercice, { type: 'souffle' }>; s
     ref.current?.arreter()
     setOuverture(1)
     son.bravo()
-    setTimeout(() => surFin('reussi'), 1200)
+    void parler('Bravo !')
+    setTimeout(() => surFin('reussi'), 1400)
   }, [surFin])
   useEffect(() => () => ref.current?.arreter(), [])
 
@@ -218,7 +220,7 @@ function Choisir({ ex, surFin }: { ex: Extract<Exercice, { type: 'choisir' }>; s
       setTimeout(() => surFin(suggestionDepuisErreurs(faux.length)), 1400)
     } else {
       son.essaieEncore()
-      void parler('Essaie encore.')
+      void parler('Réessaie encore !')
       setFaux((f) => (f.includes(i) ? f : [...f, i]))
     }
   }
@@ -281,11 +283,12 @@ function Ordre({ ex, surFin }: { ex: Extract<Exercice, { type: 'ordre' }>; surFi
       setPlaces(p)
       if (p.length === ex.etapes.length) {
         son.bravo()
+        setTimeout(() => void parler('Bravo !'), 700)
         setTimeout(() => surFin(suggestionDepuisErreurs(erreurs)), 1400)
       }
     } else {
       son.essaieEncore()
-      void parler('Essaie encore. Qu’est-ce qui vient avant ?')
+      void parler('Réessaie encore !')
       setErreurs((e) => e + 1)
     }
   }
@@ -457,7 +460,8 @@ function Geste({ ex, surFin }: { ex: Extract<Exercice, { type: 'geste' }>; surFi
           className="btn btn-vert"
           onClick={() => {
             son.bravo()
-            surFin('reussi')
+            void parler('Bravo !')
+            setTimeout(() => surFin('reussi'), 900)
           }}
         >
           C’est fait !
@@ -589,7 +593,12 @@ function Pictos({ ex, surFin }: { ex: Extract<Exercice, { type: 'pictos' }>; sur
               void parler(p.mot, { lent: true })
               const v = vus.includes(i) ? vus : [...vus, i]
               setVus(v)
-              if (v.length === ex.pictos.length) setTimeout(() => surFin('reussi'), 1500)
+              if (v.length === ex.pictos.length)
+                setTimeout(() => {
+                  son.bravo()
+                  void parler('Bravo !')
+                  setTimeout(() => surFin('reussi'), 900)
+                }, 1300)
             }}
           >
             <Dessin nom={p.dessin} />

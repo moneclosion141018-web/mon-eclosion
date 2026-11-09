@@ -16,7 +16,7 @@ import {
   type Operation,
 } from './lib/store'
 import { supabase } from './lib/supabase'
-import type { Enfant, Essai, Resultat } from './lib/types'
+import type { Enfant, Essai, Niveau, Resultat } from './lib/types'
 
 interface Contexte {
   session: Session | null
@@ -32,7 +32,7 @@ interface Contexte {
   ajouterEnfant: (e: Omit<Enfant, 'id'>) => Promise<string>
   majEnfant: (id: string, patch: Partial<Enfant>) => Promise<void>
   supprimerEnfant: (id: string) => Promise<void>
-  ajouterEssai: (exercice: string, resultat: Resultat) => Promise<Evolution>
+  ajouterBilan: (niveau: Niveau, lignes: { exercice: string; resultat: Resultat }[]) => Promise<Evolution>
   ajouterTemps: (secondes: number) => void
   secondesAujourdhui: number
   deconnecter: () => Promise<void>
@@ -222,22 +222,28 @@ export function FournisseurApp({ children }: { children: ReactNode }) {
     [enregistrer, enfantId, choisirEnfant],
   )
 
-  const ajouterEssai = useCallback(
-    async (exercice: string, resultat: Resultat): Promise<Evolution> => {
+  // Enregistre le bilan de fin de séance fait par le parent.
+  const ajouterBilan = useCallback(
+    async (niveau: Niveau, lignes: { exercice: string; resultat: Resultat }[]): Promise<Evolution> => {
       const e = ref.current.enfants.find((x) => x.id === enfantId)
-      if (!e || !userId) return null
-      const essai: Essai = {
-        id: nouvelId(),
-        enfant_id: e.id,
-        profil: e.profil,
-        niveau: e.niveau,
-        exercice,
-        resultat,
-        created_at: new Date().toISOString(),
-      }
-      const essais = [essai, ...ref.current.essais]
-      const { evolution, patch } = evolutionApresEssai(essais, e)
-      const ops: Operation[] = [{ table: 'essais', type: 'upsert', ligne: { ...essai, parent_id: userId } }]
+      if (!e || !userId || !lignes.length) return null
+      const t0 = Date.now()
+      // Le plus récent en premier, comme le reste de la liste.
+      const nouveaux: Essai[] = lignes
+        .map((l, i) => ({
+          id: nouvelId(),
+          enfant_id: e.id,
+          profil: e.profil,
+          niveau,
+          exercice: l.exercice,
+          resultat: l.resultat,
+          created_at: new Date(t0 + i).toISOString(),
+        }))
+        .reverse()
+      const essais = [...nouveaux, ...ref.current.essais]
+      // La progression ne bouge que si l'enfant a joué son niveau en cours.
+      const { evolution, patch } = niveau === e.niveau ? evolutionApresEssai(essais, e) : { evolution: null, patch: {} }
+      const ops: Operation[] = nouveaux.map((essai) => ({ table: 'essais', type: 'upsert', ligne: { ...essai, parent_id: userId } }))
       let enfants = ref.current.enfants
       if (evolution) {
         const apres = { ...e, ...patch }
@@ -288,7 +294,7 @@ export function FournisseurApp({ children }: { children: ReactNode }) {
     ajouterEnfant,
     majEnfant,
     supprimerEnfant,
-    ajouterEssai,
+    ajouterBilan,
     ajouterTemps,
     secondesAujourdhui,
     deconnecter,
