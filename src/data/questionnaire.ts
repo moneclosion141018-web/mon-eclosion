@@ -36,6 +36,7 @@ export const REPONSES = [
   { valeur: 0, label: 'Jamais' },
   { valeur: 1, label: 'Parfois' },
   { valeur: 2, label: 'Souvent' },
+  { valeur: 3, label: 'Toujours' },
 ]
 
 export const QUESTIONS_CONFORT = [
@@ -62,9 +63,10 @@ export const INTERETS = [
 
 export type NiveauPartie = 'a_decouvrir' | 'en_progres' | 'acquis'
 
+// Chaque partie compte 5 questions notées de 0 (Jamais) à 3 (Toujours), soit un score sur 15.
 export function niveauPartie(score: number): NiveauPartie {
-  if (score <= 3) return 'a_decouvrir'
-  if (score <= 7) return 'en_progres'
+  if (score <= 5) return 'a_decouvrir'
+  if (score <= 10) return 'en_progres'
   return 'acquis'
 }
 
@@ -98,7 +100,7 @@ export function reglagesDepuisConfort(confort: Scores['confort']): Partial<Regla
   if (!confort) return {}
   return {
     sansBruitFort: confort.bruit >= 1,
-    sansAnimation: confort.ecran === 2,
+    sansAnimation: confort.ecran >= 2,
   }
 }
 
